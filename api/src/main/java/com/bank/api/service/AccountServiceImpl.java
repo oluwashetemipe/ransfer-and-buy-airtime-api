@@ -12,6 +12,7 @@ import com.bank.api.web.dto.DoTransferRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -58,7 +59,7 @@ public class AccountServiceImpl implements Service {
     }
     private static void discount(Customer customer,Transaction transaction){
         if (customer.getCustomerType() == Customer.CostumerType.BUSINESS){
-            if (transaction.getTransactionPerAccountCount() > 3 && transaction.getAmount() > 150000){
+            if (transaction.getTransactionPerAccountCount() > 3 && transaction.getAmount() > 150000 && transaction.getTransactionDate().getMonth()  == LocalDate.now().getMonthValue()){
                 transaction.setDiscountedAmount(0.27 * transaction.getAmount());
             }
         }
