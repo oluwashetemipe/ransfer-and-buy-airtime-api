@@ -59,7 +59,7 @@ public class AccountServiceImpl implements Service {
     }
     private static void discount(Customer customer,Transaction transaction){
         if (customer.getCustomerType() == Customer.CostumerType.BUSINESS){
-            if (transaction.getTransactionPerAccountCount() > 3 && transaction.getAmount() > 150000 && transaction.getTransactionDate().getMonth()  == LocalDate.now().getMonthValue()){
+            if (transaction.getTransactionPerAccountCount() > 3 && transaction.getAmount() > 150000 ){
                 transaction.setDiscountedAmount(0.27 * transaction.getAmount());
             }
         }
