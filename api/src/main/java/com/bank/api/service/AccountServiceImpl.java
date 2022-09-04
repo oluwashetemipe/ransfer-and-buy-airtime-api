@@ -12,7 +12,6 @@ import com.bank.api.web.dto.DoTransferRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class AccountServiceImpl implements Service {
     @Autowired
     CostumerRepository costumerRepository;
     @Override
-    public void buyAirtime(BuyAirtimeRequest buyAirtimeRequest) throws AccountNotFoundException {
+    public HttpStatus buyAirtime(BuyAirtimeRequest buyAirtimeRequest) throws AccountNotFoundException {
         Optional<Account> accountOptional = accountRepository.findByAccountNumber(buyAirtimeRequest.getSourceAccount());
         if (accountOptional.isEmpty()){
             throw new AccountNotFoundException("Account not found");
@@ -36,6 +35,7 @@ public class AccountServiceImpl implements Service {
             account.setAccountBalance(account.getAccountBalance() - buyAirtimeRequest.getAmount());
             System.out.printf("The %s number %s has been credited with %d", buyAirtimeRequest.getNetworkProvider(),buyAirtimeRequest.getPhoneNumber(),buyAirtimeRequest.getAmount());
         }
+        return HttpStatus.OK;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AccountServiceImpl implements Service {
         }
         Optional<Account> account = accountRepository.findByAccountNumber(doTransferRequest.getSourceAccount());
         if (account.isPresent()){
-            Customer customer = costumerRepository.findByType(account.get().getCustomerId());
+            Customer customer = costumerRepository.findById(account.get().getCustomerId());
             Enum type = customer.getCustomerType();
             Date date = customer.getDateCreated();
            if ( account.get().getAccountBalance() > doTransferRequest.getAmount()){
