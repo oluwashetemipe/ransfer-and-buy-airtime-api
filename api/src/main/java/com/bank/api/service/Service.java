@@ -6,6 +6,6 @@ import com.bank.api.web.dto.DoTransferRequest;
 import org.springframework.http.HttpStatus;
 
 public interface Service {
-    void buyAirtime(BuyAirtimeRequest buyAirtimeRequest) throws AccountNotFoundException;
+    HttpStatus buyAirtime(BuyAirtimeRequest buyAirtimeRequest) throws AccountNotFoundException;
     HttpStatus doTransfer(DoTransferRequest doTransferRequest);
 }
